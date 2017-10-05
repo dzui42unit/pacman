@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/pics">
+        <file>bluestone.png</file>
+        <file>greystone.png</file>
+        <file>ball.png</file>
+        <file>pacman_down.png</file>
+        <file>pacman_left.png</file>
+        <file>pacman_right.png</file>
+        <file>pacman_up.png</file>
+    </qresource>
+</RCC>
