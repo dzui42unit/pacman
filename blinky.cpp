@@ -1,10 +1,12 @@
 #include "blinky.h"
+#include <iostream>
 
 Blinky::Blinky(QGraphicsScene *sc, int **map, PacMan *pc)
 {
     scene = sc;
     pacman = pc;
 
+    counter = 0;
     i_pos = 9;
     j_pos = 9;
     for (int i = 0; i < size_x; i++)
@@ -23,14 +25,29 @@ Blinky::Blinky(QGraphicsScene *sc, int **map, PacMan *pc)
     ft_find_pacman();
 }
 
-int        Blinky::ft_set_direction_near()
+void        Blinky::ft_set_default()
 {
+    i_pos = 9;
+    j_pos = 9;
+
+    i_exit = i_pos;
+    j_exit = j_pos;
+    counter = 0;
+    direction = 0;
+    this->setPos(j_pos * 32, i_pos * 32);
+}
+
+int         Blinky::ft_set_direction_near()
+{
+    int flag;
+
+    flag = 0;
     if (i_pos + 1 < size_x)
     {
         if (i_pos + 1 == i_exit && j_pos == j_exit)
         {
             direction = 2;
-            return (1);
+            flag = 1;
         }
     }
     if (i_pos - 1 >= 0)
@@ -38,7 +55,7 @@ int        Blinky::ft_set_direction_near()
         if (i_pos -1 == i_exit && j_pos == j_exit)
         {
             direction = 1;
-            return (1);
+            flag = 1;
         }
     }
     if (j_pos + 1 < size_x)
@@ -46,7 +63,7 @@ int        Blinky::ft_set_direction_near()
         if (i_pos == i_exit && j_pos + 1 == j_exit)
         {
             direction = 4;
-            return (1);
+            flag = 1;
         }
     }
     if (j_pos - 1 < size_x)
@@ -54,9 +71,11 @@ int        Blinky::ft_set_direction_near()
         if (i_pos == i_exit && j_pos - 1 == j_exit)
         {
             direction = 3;
-            return (1);
+            flag = 1;
         }
     }
+    if (flag)
+        return (1);
     return (0);
 }
 
@@ -66,7 +85,7 @@ void        Blinky::ft_clear_map()
     {
         for (int j = 0; j < size_y; j++)
         {
-            if (map_path[i][j] != -5 && map_path[i][j] != -3)
+            if (map_path[i][j] != -5)
                 map_path[i][j] = -3;
         }
     }
@@ -133,12 +152,34 @@ void        Blinky::ft_find_pacman()
 
     d = 0;
     flag = 0;
-    i_exit = pacman->ft_get_pacman_i();
-    j_exit = pacman->ft_get_pacman_j();
-    map_path[i_pos][j_pos] = d;
-    if (i_pos == i_exit && j_pos == j_exit)
+    if (pacman->ft_scared_state())
     {
-        direction = 0;
+        i_exit = 1;
+        j_exit = 1;
+        if (counter == 0)
+            counter = 30;
+    }
+    else
+    {
+        i_exit = pacman->ft_get_pacman_i();
+        j_exit = pacman->ft_get_pacman_j();
+    }
+    map_path[i_pos][j_pos] = d;
+    if (i_pos == i_exit && j_pos == j_exit
+            && !pacman->ft_scared_state())
+    {
+        ft_clear_map();
+        pacman->ft_set_defaut();
+        ft_set_default();
+        return ;
+    }
+    if (i_pos == pacman->ft_get_pacman_i() && j_pos == pacman->ft_get_pacman_j()
+            && pacman->ft_scared_state())
+    {
+        ft_clear_map();
+        ft_set_default();
+        this->setPixmap(QPixmap(":/pics/blinky.png"));
+        pacman->ft_set_scared();
         return ;
     }
     while (!flag && map_path[i_exit][j_exit] == -3)
@@ -182,16 +223,46 @@ void        Blinky::ft_find_pacman()
     ft_clear_map();
 }
 
+int     Blinky::ft_check_move(int i_pos, int j_pos)
+{
+    if (map_path[i_pos][j_pos] == -5)
+        return (0);
+    return (1);
+}
+
 void    Blinky::ft_move_ghost()
 {
+    if (counter)
+        this->setPixmap(QPixmap(":/pics/frightened.png"));
     ft_find_pacman();
     if (direction == 1)
-        i_pos--;
+    {
+        if (ft_check_move(i_pos - 1, j_pos))
+            i_pos--;
+    }
     if (direction == 2)
-        i_pos++;
+    {
+        if (ft_check_move(i_pos + 1, j_pos))
+            i_pos++;
+    }
     if (direction == 3)
-        j_pos--;
+    {
+        if (ft_check_move(i_pos, j_pos - 1))
+            j_pos--;
+    }
     if (direction == 4)
-        j_pos++;
+    {
+        if (ft_check_move(i_pos, j_pos + 1))
+            j_pos++;
+    }
     this->setPos(j_pos * 32, i_pos * 32);
+    if (counter > 0)
+    {
+        counter--;
+        if (counter == 0)
+        {
+            this->setPixmap(QPixmap(":/pics/blinky.png"));
+            pacman->ft_set_scared();
+        }
+    }
 }

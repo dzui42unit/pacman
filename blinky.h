@@ -21,6 +21,7 @@ private:
     int             x_dir[4] = { 1, -1, 0, 0 };
     int             y_dir[4] = { 0, 0, 1, -1 };
     PacMan          *pacman;
+    int             counter;
     QGraphicsScene  *scene;
 public:
     void            ft_clear_map();
@@ -28,6 +29,8 @@ public:
     int             ft_set_direction_near();
     void            ft_set_direction();
     void            ft_find_pacman();
+    void            ft_set_default();
+    int             ft_check_move(int i_pos, int j_pos);
                     Blinky(QGraphicsScene *sc, int **map, PacMan *pc);
 public slots:
     void    ft_move_ghost();

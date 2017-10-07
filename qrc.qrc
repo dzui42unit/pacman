@@ -10,5 +10,6 @@
         <file>energizer.png</file>
         <file>blinky.png</file>
         <file>cherries.png</file>
+        <file>frightened.png</file>
     </qresource>
 </RCC>

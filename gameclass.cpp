@@ -25,7 +25,7 @@ void    GameLoop::ft_roll_game()
     QObject::connect(timer_pacman, SIGNAL(timeout()), pacman, SLOT(ft_move()));
     timer_pacman->start(300);
     QObject::connect(timer_blinky, SIGNAL(timeout()), blinky, SLOT(ft_move_ghost()));
-    timer_blinky->start(500);
+    timer_blinky->start(300);
 }
 
 void    GameLoop::ft_create_map()
@@ -66,9 +66,6 @@ GameLoop::GameLoop(char *file_name)
     std::ifstream   input;
     std::string     temp;
     int             nb;
-
-    score = 0;
-    lives = 3;
 
     map_int = new int *[size_x];
     map_pix = new QGraphicsPixmapItem *[size_x];

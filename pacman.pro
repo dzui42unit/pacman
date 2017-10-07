@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
     gameclass.cpp \
     blinky.cpp \
-    pacman.cpp
+    pacman.cpp \
+    stats.cpp
 
 HEADERS += \
     gameclass.h \
     pacman.h \
-    blinky.h
+    blinky.h \
+    stats.h
 
 RESOURCES += \
     qrc.qrc

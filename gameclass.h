@@ -27,8 +27,7 @@ private:
     QGraphicsPixmapItem                     **map_pix;
     PacMan                                  *pacman;
     Blinky                                  *blinky;
-    int                                     score;
-    int                                     lives;
+    Stats                                   *stats;
     int                                     ft_check_file_inp(std::string str);
     void                                    ft_write_line_map(int *map, std::string str);
 public:

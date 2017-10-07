@@ -9,19 +9,31 @@ void    PacMan::ft_update_scene()
     }
     if (map_int[i_pos][j_pos] == 4)
     {
+        scared = 1;
         map_int[i_pos][j_pos] = 0;
         scene->removeItem(&(map_pix[i_pos][j_pos]));
     }
 }
 
-PacMan::PacMan(int **map_int, QGraphicsPixmapItem **map_pix, QGraphicsScene *scene)
+int     PacMan::ft_scared_state()
+{
+    return (scared);
+}
+
+void    PacMan::ft_set_scared()
+{
+    scared = !scared;
+}
+
+PacMan::PacMan(int **map_i, QGraphicsPixmapItem **map_p, QGraphicsScene *sc)
 {
     i_pos = 15;
     j_pos = 9;
     direction = 0;
-    this->map_int = map_int;
-    this->map_pix = map_pix;
-    this->scene = scene;
+    map_int = map_i;
+    map_pix = map_p;
+    scene = sc;
+    scared = 0;
     this->setPixmap(QPixmap(":/pics/pacman_left.png"));
     this->setPos(j_pos * 32, i_pos * 32);
     scene->addItem(this);
@@ -118,10 +130,11 @@ int     PacMan::ft_check_move(int i_pos, int j_pos)
     return (1);
 }
 
-int     **PacMan::ft_return_map()
+void    PacMan::ft_set_defaut()
 {
-    return (map_int);
+    i_pos = 15;
+    j_pos = 9;
+
+    direction = 0;
+    this->setPos(j_pos * 32, i_pos * 32);
 }
-
-
-
