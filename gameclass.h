@@ -1,9 +1,12 @@
 #ifndef GAMECLASS_H
 #define GAMECLASS_H
 
+#include <fstream>
+#include <string>
 #include <ctime>
 #include <random>
 #include <vector>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <QTimer>
@@ -13,20 +16,25 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include "pacman.h"
+#include "blinky.h"
 
 class   GameLoop : public QGraphicsView
 {
 private:
-    QGraphicsScene              *scene;
-    QGraphicsView               *view;
-    int                         map_int[size_x][size_y];
-    QGraphicsPixmapItem         map_pix[size_x][size_y];
-    PacMan                      *pacman;
-    int                         score;
-    int                         lives;
+    QGraphicsScene                          *scene;
+    QGraphicsView                           *view;
+    int                                     **map_int;
+    QGraphicsPixmapItem                     **map_pix;
+    PacMan                                  *pacman;
+    Blinky                                  *blinky;
+    int                                     score;
+    int                                     lives;
+    int                                     ft_check_file_inp(std::string str);
+    void                                    ft_write_line_map(int *map, std::string str);
 public:
-            GameLoop();
+            GameLoop(char *file_name);
     void    ft_roll_game();
+    void    ft_create_map();
 };
 
 #endif // GAMECLASS_H

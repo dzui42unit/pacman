@@ -1,10 +1,10 @@
 #ifndef PACMAN_H
 #define PACMAN_H
 
-#define WIDTH 1280
-#define HEIGHT 640
-#define size_x 10
-#define size_y 20
+#define WIDTH 608
+#define HEIGHT 672
+#define size_x 21
+#define size_y 19
 
 #include <QObject>
 #include <QKeyEvent>
@@ -18,17 +18,17 @@ private:
     int                         i_pos;
     int                         j_pos;
     int                         direction;
-    int                         map_int[size_x][size_y];
-    QGraphicsPixmapItem         map_pix[size_x][size_y];
+    int                         **map_int;
+    QGraphicsPixmapItem         **map_pix;
     QGraphicsScene              *scene;
+    void                        ft_update_scene();
+    int                         ft_check_move(int i_pos, int j_pos);
+    int                         **ft_return_map();
 public:
-            PacMan(QGraphicsScene *scene);
+            PacMan(int **map_int, QGraphicsPixmapItem **map_pix, QGraphicsScene *scene);
     void    keyPressEvent(QKeyEvent *event);
-    int     ft_check_move(int i_pos, int j_pos);
     int     ft_get_pacman_i(void);
     int     ft_get_pacman_j(void);
-    void    ft_create_map();
-    void    ft_update_scene();
 public slots:
     void    ft_move();
 };

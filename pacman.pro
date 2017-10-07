@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui \
+	 multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,11 +27,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     gameclass.cpp \
-    packman.cpp
+    blinky.cpp \
+    pacman.cpp
 
 HEADERS += \
     gameclass.h \
-    pacman.h
+    pacman.h \
+    blinky.h
 
 RESOURCES += \
     qrc.qrc
