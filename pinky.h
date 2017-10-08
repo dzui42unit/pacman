@@ -1,10 +1,10 @@
-#ifndef BLINKY_H
-#define BLINKY_H
+#ifndef PINKY_H
+#define PINKY_H
 
 #include <QGraphicsPixmapItem>
 #include "pacman.h"
 
-class   Blinky : public QObject, public QGraphicsPixmapItem
+class   Pinky : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 private:
@@ -31,11 +31,12 @@ public:
     void            ft_find_pacman();
     void            ft_set_default();
     void            ft_find_path();
+    void            ft_calculate_point();
     int             ft_check_intersect();
     int             ft_check_move(int i_pos, int j_pos);
-                    Blinky(QGraphicsScene *sc, int **map, PacMan *pc);
+                    Pinky(QGraphicsScene *sc, int **map, PacMan *pc);
 public slots:
-    void    ft_move_ghost();
+    void            ft_move_ghost();
 };
 
-#endif // BLINKY_H
+#endif // PINKY_H

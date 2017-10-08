@@ -17,23 +17,24 @@
 #include <QGraphicsPixmapItem>
 #include "pacman.h"
 #include "blinky.h"
+#include "pinky.h"
 
 class   GameLoop : public QGraphicsView
 {
 private:
     QGraphicsScene                          *scene;
     QGraphicsView                           *view;
-    int                                     **map_int;
     QGraphicsPixmapItem                     **map_pix;
     PacMan                                  *pacman;
     Blinky                                  *blinky;
-    Stats                                   *stats;
-    int                                     ft_check_file_inp(std::string str);
-    void                                    ft_write_line_map(int *map, std::string str);
+    Pinky                                   *pinky;
+    int                                     **map_int;
 public:
-            GameLoop(char *file_name);
-    void    ft_roll_game();
-    void    ft_create_map();
+                                            GameLoop(char *file_name);
+    void                                    ft_write_line_map(int *map, std::string str);
+    void                                    ft_roll_game();
+    void                                    ft_create_map();
+    int                                     ft_check_file_inp(std::string str);
 };
 
 #endif // GAMECLASS_H

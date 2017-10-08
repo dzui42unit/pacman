@@ -19,13 +19,17 @@ void    GameLoop::ft_roll_game()
 {
     QTimer  *timer_pacman;
     QTimer  *timer_blinky;
+    QTimer  *timer_pinky;
 
     timer_pacman = new QTimer();
     timer_blinky = new QTimer();
+    timer_pinky = new QTimer();
     QObject::connect(timer_pacman, SIGNAL(timeout()), pacman, SLOT(ft_move()));
-    timer_pacman->start(300);
     QObject::connect(timer_blinky, SIGNAL(timeout()), blinky, SLOT(ft_move_ghost()));
-    timer_blinky->start(300);
+    QObject::connect(timer_pinky, SIGNAL(timeout()), pinky, SLOT(ft_move_ghost()));
+    timer_pacman->start(300);
+    timer_blinky->start(350);
+    timer_pinky->start(350);
 }
 
 void    GameLoop::ft_create_map()
@@ -83,12 +87,12 @@ GameLoop::GameLoop(char *file_name)
         {
             if (temp.length() != size_y)
             {
-                std::cout << "File error 1.\n";
+                std::cout << "File error.\n";
                 exit(0);
             }
             if (ft_check_file_inp(temp))
             {
-                std::cout << "File error 3.\n";
+                std::cout << "File error.\n";
                 exit(0);
             }
             ft_write_line_map(map_int[nb], temp);
@@ -96,7 +100,7 @@ GameLoop::GameLoop(char *file_name)
         }
         if (nb != size_x)
         {
-            std::cout << "File error 2.\n";
+            std::cout << "File error.\n";
             exit(0);
         }
         input.close();
@@ -115,4 +119,5 @@ GameLoop::GameLoop(char *file_name)
     pacman->setFlag(QGraphicsPixmapItem::ItemIsFocusable);
     pacman->setFocus();
     blinky = new Blinky(scene, map_int, pacman);
+    pinky = new Pinky(scene, map_int, pacman);
 }

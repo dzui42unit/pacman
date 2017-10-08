@@ -1,10 +1,32 @@
 #include "pacman.h"
+#include <iostream>
 
 void    PacMan::ft_update_scene()
 {
+    static int flag;
+
+    if (score % 50 == 0 && score != 0)
+    {
+        map_int[15][9] = 6;
+        if (!flag)
+        {
+            map_pix[15][9].setPixmap(QPixmap(":/pics/cherries.png"));
+            scene->addItem(&(map_pix[15][9]));
+            flag = 1;
+        }
+    }
+    if (map_int[i_pos][j_pos] == 6)
+    {
+        score += 200;
+        map_int[i_pos][j_pos] = 0;
+        scene->removeItem(&(map_pix[15][9]));
+        flag = 0;
+    }
     if (map_int[i_pos][j_pos] == 3)
     {
         map_int[i_pos][j_pos] = 0;
+        score += 10;
+        points--;
         scene->removeItem(&(map_pix[i_pos][j_pos]));
     }
     if (map_int[i_pos][j_pos] == 4)
@@ -25,18 +47,48 @@ void    PacMan::ft_set_scared()
     scared = !scared;
 }
 
+int     PacMan::ft_get_score()
+{
+    return (score);
+}
+
+void    PacMan::ft_print_score()
+{
+    text->setDefaultTextColor(0x00ffffff);
+    text->setFont(QFont("times", 15));
+    text->setPlainText("SCORE: " + QString::number(score) + "\t\tLIVES: " + QString::number(lives));
+    text->setPos(10 , HEIGHT - 30);
+}
+
+void    PacMan::ft_set_lives()
+{
+    lives--;
+}
+
 PacMan::PacMan(int **map_i, QGraphicsPixmapItem **map_p, QGraphicsScene *sc)
 {
     i_pos = 15;
+    score = 0;
+    points = 149;
     j_pos = 9;
+    counter = 0;
     direction = 0;
     map_int = map_i;
     map_pix = map_p;
     scene = sc;
     scared = 0;
+    lives = 3;
+    text = new QGraphicsTextItem();
     this->setPixmap(QPixmap(":/pics/pacman_left.png"));
     this->setPos(j_pos * 32, i_pos * 32);
     scene->addItem(this);
+    scene->addItem(text);
+    ft_print_score();
+}
+
+int     PacMan::ft_get_direction()
+{
+    return (direction);
 }
 
 void    PacMan::keyPressEvent(QKeyEvent *event)
@@ -64,7 +116,12 @@ void    PacMan::keyPressEvent(QKeyEvent *event)
 }
 
 void    PacMan::ft_move()
-{
+{   
+    ft_print_score();
+    if (points == 0)
+        exit(0);
+    if (lives == 0)
+        exit(0);
     ft_update_scene();
     if (direction == 1)
     {

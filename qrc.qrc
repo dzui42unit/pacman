@@ -11,5 +11,6 @@
         <file>blinky.png</file>
         <file>cherries.png</file>
         <file>frightened.png</file>
+        <file>pinky.png</file>
     </qresource>
 </RCC>

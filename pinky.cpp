@@ -1,13 +1,13 @@
-#include "blinky.h"
+#include "pinky.h"
 #include <iostream>
 
-Blinky::Blinky(QGraphicsScene *sc, int **map, PacMan *pc)
+Pinky::Pinky(QGraphicsScene *sc, int **map, PacMan *pc)
 {
     scene = sc;
     pacman = pc;
 
     counter = 0;
-    i_pos = 8;
+    i_pos = 9;
     j_pos = 9;
     for (int i = 0; i < size_x; i++)
     {
@@ -19,23 +19,23 @@ Blinky::Blinky(QGraphicsScene *sc, int **map, PacMan *pc)
                 map_path[i][j] = -3;
         }
     }
-    this->setPixmap(QPixmap(":/pics/blinky.png"));
+    this->setPixmap(QPixmap(":/pics/pinky.png"));
     this->setPos(j_pos * 32, i_pos * 32);
     scene->addItem(this);
-    ft_find_pacman();
 }
 
-void        Blinky::ft_set_default()
+void        Pinky::ft_set_default()
 {
-    i_exit = i_pos;
-    j_exit = j_pos;
     i_pos = 9;
     j_pos = 9;
+
+    i_exit = i_pos;
+    j_exit = j_pos;
     direction = 0;
     this->setPos(j_pos * 32, i_pos * 32);
 }
 
-int         Blinky::ft_set_direction_near()
+int         Pinky::ft_set_direction_near()
 {
     int flag;
 
@@ -77,7 +77,7 @@ int         Blinky::ft_set_direction_near()
     return (0);
 }
 
-void        Blinky::ft_clear_map()
+void        Pinky::ft_clear_map()
 {
     for (int i = 0; i < size_x; i++)
     {
@@ -89,7 +89,7 @@ void        Blinky::ft_clear_map()
     }
 }
 
-void        Blinky::ft_restore_path()
+void        Pinky::ft_restore_path()
 {
     int i;
     int j;
@@ -118,7 +118,7 @@ void        Blinky::ft_restore_path()
     }
 }
 
-void        Blinky::ft_set_direction()
+void        Pinky::ft_set_direction()
 {
     if (i_pos + 1 < size_x)
     {
@@ -142,7 +142,7 @@ void        Blinky::ft_set_direction()
     }
 }
 
-void        Blinky::ft_find_path()
+void        Pinky::ft_find_path()
 {
     int i;
     int j;
@@ -181,14 +181,66 @@ void        Blinky::ft_find_path()
     }
 }
 
-int        Blinky::ft_check_intersect()
+void        Pinky::ft_calculate_point()
+{
+    int direction;
+
+    direction = pacman->ft_get_direction();
+    if (direction == 1)
+    {
+        i_exit = pacman->ft_get_pacman_i() - 4;
+        j_exit = pacman->ft_get_pacman_j();
+        if (i_exit < 0)
+        {
+            i_exit = pacman->ft_get_pacman_i();
+            j_exit = pacman->ft_get_pacman_j();
+        }
+    }
+    if (direction == 2)
+    {
+        i_exit = pacman->ft_get_pacman_i() + 4;
+        j_exit = pacman->ft_get_pacman_j();
+        if (i_exit >= size_x)
+        {
+            i_exit = pacman->ft_get_pacman_i();
+            j_exit = pacman->ft_get_pacman_j();
+        }
+    }
+    if (direction == 3)
+    {
+        i_exit = pacman->ft_get_pacman_i();
+        j_exit = pacman->ft_get_pacman_j() - 4;
+        if (j_exit < 0)
+        {
+            i_exit = pacman->ft_get_pacman_i();
+            j_exit = pacman->ft_get_pacman_j();
+        }
+    }
+    if (direction == 4)
+    {
+        i_exit = pacman->ft_get_pacman_i();
+        j_exit = pacman->ft_get_pacman_j() + 4;
+        if (j_exit > size_y)
+        {
+            i_exit = pacman->ft_get_pacman_i();
+            j_exit = pacman->ft_get_pacman_j();
+        }
+    }
+    if (map_path[i_exit][j_exit] != -3)
+    {
+        i_exit = pacman->ft_get_pacman_i();
+        j_exit = pacman->ft_get_pacman_j();
+    }
+}
+
+int        Pinky::ft_check_intersect()
 {
     if (i_pos == pacman->ft_get_pacman_i() && j_pos == pacman->ft_get_pacman_j()
             && !pacman->ft_scared_state())
     {
         ft_clear_map();
         pacman->ft_set_defaut();
-        pacman->ft_set_lives();
+        ft_set_default();
         return (1);
     }
     if (i_pos == pacman->ft_get_pacman_i() && j_pos == pacman->ft_get_pacman_j()
@@ -203,78 +255,74 @@ int        Blinky::ft_check_intersect()
     return (0);
 }
 
-void        Blinky::ft_find_pacman()
+void        Pinky::ft_find_pacman()
 {
     d = 0;
     flag = 0;
     if (!pacman->ft_scared_state())
     {
-        i_exit = pacman->ft_get_pacman_i();
-        j_exit = pacman->ft_get_pacman_j();
-        this->setPixmap(QPixmap(":/pics/blinky.png"));
+        this->setPixmap(QPixmap(":/pics/pinky.png"));
+        ft_calculate_point();
     }
     else
     {
-        if (i_pos == 1 && j_pos == 1)
+        if (i_pos == 1 && j_pos == size_y - 2)
             pacman->ft_set_scared();
         else
         {
             this->setPixmap(QPixmap(":/pics/frightened.png"));
             i_exit = 1;
-            j_exit = 1;
+            j_exit = size_y - 2;
         }
     }
     map_path[i_pos][j_pos] = d;
     if (ft_check_intersect())
-    {
-        ft_clear_map();
         return ;
-    }
     ft_find_path();
     if (ft_set_direction_near())
     {
-        if (ft_check_intersect())
-        {
-            ft_clear_map();
-            return ;
-        }
+        ft_clear_map();
+        return ;
     }
     ft_restore_path();
     ft_set_direction();
     ft_clear_map();
 }
 
-int     Blinky::ft_check_move(int i_pos, int j_pos)
+int     Pinky::ft_check_move(int i_pos, int j_pos)
 {
     if (map_path[i_pos][j_pos] == -5)
         return (0);
     return (1);
 }
 
-void    Blinky::ft_move_ghost()
+void    Pinky::ft_move_ghost()
 {
-    ft_find_pacman();
-    if (direction == 1)
+    if (pacman->ft_get_score() >= 350)
     {
-        if (ft_check_move(i_pos - 1, j_pos))
-            i_pos--;
+        ft_find_pacman();
+        if (direction == 1)
+        {
+            if (ft_check_move(i_pos - 1, j_pos))
+                i_pos--;
+        }
+        if (direction == 2)
+        {
+            if (ft_check_move(i_pos + 1, j_pos))
+                i_pos++;
+        }
+        if (direction == 3)
+        {
+            if (ft_check_move(i_pos, j_pos - 1))
+                j_pos--;
+        }
+        if (direction == 4)
+        {
+            if (ft_check_move(i_pos, j_pos + 1))
+                j_pos++;
+        }
+        this->setPos(j_pos * 32, i_pos * 32);
+        if (ft_check_intersect())
+            return ;
     }
-    if (direction == 2)
-    {
-        if (ft_check_move(i_pos + 1, j_pos))
-            i_pos++;
-    }
-    if (direction == 3)
-    {
-        if (ft_check_move(i_pos, j_pos - 1))
-            j_pos--;
-    }
-    if (direction == 4)
-    {
-        if (ft_check_move(i_pos, j_pos + 1))
-            j_pos++;
-    }
-    this->setPos(j_pos * 32, i_pos * 32);
-    if (ft_check_intersect())
-        return ;
 }
