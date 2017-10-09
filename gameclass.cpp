@@ -1,5 +1,4 @@
 #include "gameclass.h"
-#include "blinky.h"
 
 int     GameLoop::ft_check_file_inp(std::string str)
 {
@@ -15,21 +14,49 @@ int     GameLoop::ft_check_file_inp(std::string str)
     return (0);
 }
 
+GameLoop::~GameLoop()
+{
+    delete scene;
+    delete view;
+    delete pacman;
+    delete pinky;
+    delete clyde;
+    delete blinky;
+    delete inky;
+    delete timer_pacman;
+    delete timer_blinky;
+    delete timer_pinky;
+    delete timer_clyde;
+    delete timer_inky;
+    for (int i = 0; i < size_x; i++)
+    {
+        for (int j = 0; j < size_y; j++)
+        {
+            delete map_pix[i];
+            delete map_int[i];
+        }
+    }
+    delete []map_pix;
+    delete []map_int;
+}
+
 void    GameLoop::ft_roll_game()
 {
-    QTimer  *timer_pacman;
-    QTimer  *timer_blinky;
-    QTimer  *timer_pinky;
-
-    timer_pacman = new QTimer();
     timer_blinky = new QTimer();
     timer_pinky = new QTimer();
+    timer_clyde = new QTimer();
+    timer_pacman = new QTimer();
+    timer_inky = new QTimer();
     QObject::connect(timer_pacman, SIGNAL(timeout()), pacman, SLOT(ft_move()));
+    QObject::connect(timer_inky, SIGNAL(timeout()), inky, SLOT(ft_move_ghost()));
+    QObject::connect(timer_clyde, SIGNAL(timeout()), clyde, SLOT(ft_move_ghost()));
     QObject::connect(timer_blinky, SIGNAL(timeout()), blinky, SLOT(ft_move_ghost()));
     QObject::connect(timer_pinky, SIGNAL(timeout()), pinky, SLOT(ft_move_ghost()));
     timer_pacman->start(300);
-    timer_blinky->start(350);
-    timer_pinky->start(350);
+    timer_inky->start(400);
+    timer_clyde->start(400);
+    timer_blinky->start(400);
+    timer_pinky->start(400);
 }
 
 void    GameLoop::ft_create_map()
@@ -120,4 +147,10 @@ GameLoop::GameLoop(char *file_name)
     pacman->setFocus();
     blinky = new Blinky(scene, map_int, pacman);
     pinky = new Pinky(scene, map_int, pacman);
+    clyde = new Clyde(scene, map_int, pacman);
+    inky = new Inky(scene, map_int, pacman);
+    blinky->ft_set_friends(pinky, clyde, inky);
+    pinky->ft_set_friends(blinky, clyde, inky);
+    clyde->ft_set_friends(blinky, pinky, inky);
+    inky->ft_set_friends(blinky, pinky, clyde);
 }

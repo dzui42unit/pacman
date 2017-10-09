@@ -5,7 +5,6 @@
 #-------------------------------------------------
 
 QT       += core gui \
-	 multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,13 +28,19 @@ SOURCES += \
     gameclass.cpp \
     blinky.cpp \
     pacman.cpp \
-    pinky.cpp
+    pinky.cpp \
+    ghost.cpp \
+    clyde.cpp \
+    inky.cpp
 
 HEADERS += \
     gameclass.h \
     pacman.h \
     blinky.h \
-    pinky.h
+    pinky.h \
+    ghost.h \
+    clyde.h \
+    inky.h
 
 RESOURCES += \
     qrc.qrc

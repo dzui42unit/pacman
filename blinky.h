@@ -1,41 +1,30 @@
 #ifndef BLINKY_H
 #define BLINKY_H
 
-#include <QGraphicsPixmapItem>
-#include "pacman.h"
+#include "ghost.h"
+#include "pinky.h"
+#include "clyde.h"
+#include "inky.h"
 
-class   Blinky : public QObject, public QGraphicsPixmapItem
+class       Pinky;
+class       Clyde;
+class       Inky;
+
+class       Blinky : public Ghost
 {
-    Q_OBJECT
 private:
-    int             i_pos;
-    int             j_pos;
-    int             direction;
-    int             map_path[size_x][size_y];
-    int             i_x;
-    int             i_y;
-    int             d;
-    int             flag;
-    int             i_exit;
-    int             j_exit;
-    int             x_dir[4] = { 1, -1, 0, 0 };
-    int             y_dir[4] = { 0, 0, 1, -1 };
-    PacMan          *pacman;
-    int             counter;
-    QGraphicsScene  *scene;
+    Pinky           *pinky;
+    Clyde           *clyde;
+    Inky            *inky;
 public:
-    void            ft_clear_map();
-    void            ft_restore_path();
-    int             ft_set_direction_near();
-    void            ft_set_direction();
-    void            ft_find_pacman();
-    void            ft_set_default();
-    void            ft_find_path();
-    int             ft_check_intersect();
-    int             ft_check_move(int i_pos, int j_pos);
                     Blinky(QGraphicsScene *sc, int **map, PacMan *pc);
+    void            ft_set_default();
+    void            ft_calculate_point();
+    void            ft_find_pacman();
+    void            ft_set_friends(Pinky *pin, Clyde *cl, Inky *ink);
+    void            ft_find_path();
 public slots:
-    void    ft_move_ghost();
+    void            ft_move_ghost();
 };
 
 #endif // BLINKY_H

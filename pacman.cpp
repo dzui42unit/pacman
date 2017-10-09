@@ -5,7 +5,7 @@ void    PacMan::ft_update_scene()
 {
     static int flag;
 
-    if (score % 50 == 0 && score != 0)
+    if (points == 50)
     {
         map_int[15][9] = 6;
         if (!flag)
@@ -26,7 +26,7 @@ void    PacMan::ft_update_scene()
     {
         map_int[i_pos][j_pos] = 0;
         score += 10;
-        points--;
+        points++;
         scene->removeItem(&(map_pix[i_pos][j_pos]));
     }
     if (map_int[i_pos][j_pos] == 4)
@@ -60,6 +60,11 @@ void    PacMan::ft_print_score()
     text->setPos(10 , HEIGHT - 30);
 }
 
+void    PacMan::ft_incr_score()
+{
+    score += 100;
+}
+
 void    PacMan::ft_set_lives()
 {
     lives--;
@@ -69,7 +74,7 @@ PacMan::PacMan(int **map_i, QGraphicsPixmapItem **map_p, QGraphicsScene *sc)
 {
     i_pos = 15;
     score = 0;
-    points = 149;
+    points = 0;
     j_pos = 9;
     counter = 0;
     direction = 0;
@@ -79,6 +84,7 @@ PacMan::PacMan(int **map_i, QGraphicsPixmapItem **map_p, QGraphicsScene *sc)
     scared = 0;
     lives = 3;
     text = new QGraphicsTextItem();
+    message = new QGraphicsTextItem();
     this->setPixmap(QPixmap(":/pics/pacman_left.png"));
     this->setPos(j_pos * 32, i_pos * 32);
     scene->addItem(this);
@@ -115,13 +121,38 @@ void    PacMan::keyPressEvent(QKeyEvent *event)
      }
 }
 
+int     PacMan::ft_get_point()
+{
+    return (points);
+}
+
 void    PacMan::ft_move()
 {   
+    static int flag;
+
     ft_print_score();
-    if (points == 0)
-        exit(0);
-    if (lives == 0)
-        exit(0);
+    if (points == 149 && !flag)
+    {
+        message->setDefaultTextColor(0x00ff00ff);
+        message->setFont(QFont("times", 40));
+        message->setPlainText("YOU WIN");
+        message->setPos(60, HEIGHT / 2 - 30);
+        scene->addItem(message);
+        scene->removeItem(this);
+        scene->removeItem(text);
+        flag = 1;
+    }
+    if (lives <= 0 && !flag)
+    {
+        message->setDefaultTextColor(0x00ff00ff);
+        message->setFont(QFont("times", 60));
+        message->setPlainText("YOU LOST");
+        message->setPos(80, HEIGHT / 2);
+        scene->addItem(message);
+        scene->removeItem(this);
+        scene->removeItem(text);
+        flag = 1;
+    }
     ft_update_scene();
     if (direction == 1)
     {

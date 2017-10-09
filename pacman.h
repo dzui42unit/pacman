@@ -11,6 +11,7 @@
 #include <QKeyEvent>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <unistd.h>
 
 class   PacMan : public QObject, public QGraphicsPixmapItem
 {
@@ -23,6 +24,7 @@ private:
     QGraphicsPixmapItem         **map_pix;
     QGraphicsScene              *scene;
     QGraphicsTextItem           *text;
+    QGraphicsTextItem           *message;
     int                         lives;
     void                        ft_update_scene();
     int                         ft_check_move(int i_pos, int j_pos);
@@ -40,8 +42,10 @@ public:
     void    ft_set_scared();
     int     ft_get_direction();
     int     ft_get_pacman_j(void);
+    void    ft_incr_score();
     void    ft_print_score();
     void    ft_set_lives();
+    int     ft_get_point();
 public slots:
     void    ft_move();
 };

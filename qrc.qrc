@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/pics">
-        <file>bluestone.png</file>
         <file>greystone.png</file>
         <file>ball.png</file>
         <file>pacman_down.png</file>
@@ -12,5 +11,7 @@
         <file>cherries.png</file>
         <file>frightened.png</file>
         <file>pinky.png</file>
+        <file>clyde.png</file>
+        <file>inky.png</file>
     </qresource>
 </RCC>

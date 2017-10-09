@@ -1,31 +1,31 @@
-#ifndef PINKY_H
-#define PINKY_H
+#ifndef INKY_H
+#define INKY_H
 
 #include "ghost.h"
 #include "blinky.h"
 #include "clyde.h"
-#include "inky.h"
+#include "pinky.h"
 
 class       Blinky;
+class       Pinky;
 class       Clyde;
-class       Inky;
 
-class       Pinky : public Ghost
+class       Inky : public Ghost
 {
 private:
     Blinky  *blinky;
     Clyde   *clyde;
-    Inky    *inky;
+    Pinky   *pinky;
     Q_OBJECT
 public:
     void    ft_set_default();
     void    ft_calculate_point();
     void    ft_find_pacman();
-    void    ft_set_friends(Blinky *bl, Clyde *cl, Inky *ink);
+    void    ft_set_friends(Blinky *bl, Pinky *pnc, Clyde *cld);
     void    ft_find_path();
-            Pinky(QGraphicsScene *sc, int **map, PacMan *pc);
+            Inky(QGraphicsScene *sc, int **map, PacMan *pc);
 public slots:
     void    ft_move_ghost();
 };
 
-#endif // PINKY_H
+#endif // INKY_H
